@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Geijer</title>
+  <meta name="author" content="perwim" />
+  <meta name="Resource-type" content="Document" />
+
+    <link rel="stylesheet" href="src/bootstrap.3.3.7/css/bootstrap.min.css">
+    <script src="src/jquery-3.1.1.min.js"></script>
+    <script src="src/bootstrap.3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+  p {
+      text-align: center;
+  }
+
+  div {
+    width: 100px;
+    height: 100px;
+
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+    <div>
+      <p name = "Resultat">
+          <span> Per person: </span> <span id = "value">00000</span>
+          <br>
+          <span> Resultat: </span> <span id = "result"></span>
+          <br>
+          <span> Skattereduktion: </span> <span id = "skatt"></span>
+          <br>
+        
+        Försäljningspris:
+        <br>
+        <input type = "number" min = "0" align="center" id = "sales">
+      </p>
+
+    </div>
+
+
+
+
+<script>
+
+  function brf(salesprice){ 
+    price = 2660000
+    bank = 1230000
+    pau = 1000000 
+    interest = 38000
+    agent = 50000
+    hemnet = 1500
+
+    result = salesprice - price - interest - agent - hemnet
+    $("#result").text(Math.round(result) + " kr")
+
+    if(result < -100000){
+      result = result + 100000
+      
+      // 30 % of half of first 100k
+      korr1 = 15000
+      // 21 % of whatever is left of thw other half
+      korr2 = -1* result/2 * 0.21
+      
+      korr = korr1 + korr2
+    }else if(result < 0){
+      korr = -1* result/2 * 0.30
+    }else{
+      korr <- -1 * result * 0.30
+    }
+
+    $("#skatt").text(Math.round(korr) + " kr")
+    andel = (salesprice - bank - pau - interest - agent + korr)/2  
+    
+    //print(paste("att inkassera:", andel))
+    //return(andel)
+    $("#value").text(Math.round(andel) + " kr")
+  }
+
+
+  $("#sales").keyup( function() {
+    var searchQuery = Number($("#sales").val());
+
+
+    brf(searchQuery);
+});
+
+</script>
+</body>
+</html>
